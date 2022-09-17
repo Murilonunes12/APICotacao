@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace APICotacao.Models
 {
@@ -9,7 +10,20 @@ namespace APICotacao.Models
             Database.EnsureCreated();
         }
 
-        public DbSet<Cotacao> Cotacoes { get; set; }   
-        public DbSet<CotacaoItem> CotacaoItem { get; set; }   
+        public DbSet<Cotacao> Cotacoes { get; set; }
+        public DbSet<CotacaoItem> CotacaoItem { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Cotacao>()
+                .HasMany(b => b.CotacaoItems)
+                .WithOne();
+
+            modelBuilder.Entity<Cotacao>()
+                .Navigation(b => b.CotacaoItems)
+                .UsePropertyAccessMode(PropertyAccessMode.Property);
+        }
+
     }
+
 }

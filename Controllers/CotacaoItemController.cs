@@ -30,7 +30,7 @@ namespace Cotacao.Api.Controllers
             return await _cotacaoItemRepository.Get(Id);
         }
         [HttpPost]
-        public async Task<ActionResult<APICotacao.Models.CotacaoItem>> PostCotacoes([FromBody] APICotacao.Models.CotacaoItem cotacao)
+        public async Task<ActionResult<APICotacao.Models.CotacaoItem>> PostCotacaoItem([FromBody] APICotacao.Models.CotacaoItem cotacao)
         {
             var newCotacao = await _cotacaoItemRepository.Create(cotacao);
             return CreatedAtAction(nameof(GetCotacaos), new { Id = newCotacao.Id }, newCotacao);

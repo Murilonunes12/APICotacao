@@ -23,7 +23,7 @@ namespace APICotacao.Models
         public string UF { get; set; }
         public string Observacao { get; set; }
 
-        public List<CotacaoItem> CotacaoItems { get; set;}       
+        public virtual ICollection<CotacaoItem> CotacaoItems { get; set;}       
        
     }
 }

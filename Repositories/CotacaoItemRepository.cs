@@ -1,32 +1,47 @@
 ﻿using APICotacao.Models;
+using System.Data.Entity;
 
 namespace APICotacao.Repositories
 {
     public class CotacaoItemRepository : ICotacaoItemRepository
     {
-        public Task<CotacaoItem> Create(CotacaoItem cotacao)
+        public readonly CotacaoDBContext _DB;
+        public CotacaoItemRepository(CotacaoDBContext context)
         {
-            throw new NotImplementedException();
+            _DB = context;
+        }
+        public async Task<Models.CotacaoItem> Create(Models.CotacaoItem cotacaoitem)
+        {
+            _DB.CotacaoItem.Add(cotacaoitem);
+            await _DB.SaveChangesAsync();
+
+            return cotacaoitem;
         }
 
-        public Task<CotacaoItem> Delete(int Id)
+        public async Task Delete(int Id)
         {
-            throw new NotImplementedException();
+            var cotacaoToDelete = await _DB.CotacaoItem.FindAsync(Id);
+            _DB.CotacaoItem.Remove(cotacaoToDelete);
+            await _DB.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<CotacaoItem>> Get()
+        public async Task<IEnumerable<Models.CotacaoItem>> Get()
         {
-            throw new NotImplementedException();
+            return await _DB.CotacaoItem.ToListAsync();
+
         }
 
-        public Task<CotacaoItem> Get(int Id)
+        public async Task<Models.CotacaoItem> Get(int Id)
         {
-            throw new NotImplementedException();
+            return await _DB.CotacaoItem.FindAsync(Id);
         }
 
-        public Task<CotacaoItem> Update(CotacaoItem cotacao)
+        public async Task Update(Models.CotacaoItem cotacaoItem)
         {
-            throw new NotImplementedException();
+            _DB.Entry(cotacaoItem).State = (Microsoft.EntityFrameworkCore.EntityState)EntityState.Modified;
+            await _DB.SaveChangesAsync();
         }
+
+
     }
 }
